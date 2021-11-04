@@ -133,3 +133,15 @@ Exercise 2 : Dvdrental Database
 1.select * from customer;
 2.select first_name, last_name as full_name from customer;
 3.select distinct create_date from customer; 
+4. select * from customer order by first_name desc;
+5. select film_id, title, description, release_year, rental_rate from film order by rental_rate asc;
+6.  select address, phone from customer inner join address on customer.address_id = address.address_id and address.district = 'Texas';
+7. select * from film where film_id in (15,150);
+8. select film_id, title, description, length, rental_rate from film where title ilike 'Forest Gump';
+9.  select film_id, title, description, length, rental_rate from film where title ilike 'ba%';
+10. select title, rental_rate from film order by rental_rate limit 10;
+11. select title, rental_rate, film_id from film order by rental_rate offset 20 rows fetch first 10 rows only;
+12.select customer.customer_id, payment.amount, payment.payment_date from customer inner join payment on customer.customer_id = payment.customer_id order by customer.customer_id;
+13. select title, film_id from film where film_id not in (select film_id from inventory);
+14. select country.country, city.city from country inner join city on country.country_id = city.country_id;
+15. select customer.customer_id, customer.first_name, customer.last_name, payment.payment_date, payment.amount from customer inner join payment on customer.customer_id = payment.customer_id order by payment.staff_id;

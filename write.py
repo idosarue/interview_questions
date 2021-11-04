@@ -11,4 +11,7 @@ info = '''
 with open('what_to_learn.txt', 'w') as file:
     file.write(info)
 
-  
+def add_underscore(name):
+    print(name.replace(' ', '_'))
+
+add_underscore(input('file name: '))
