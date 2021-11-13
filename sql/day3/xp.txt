@@ -36,6 +36,7 @@ CREATE TABLE
 
 Add 2 movie reviews. Make sure you link them to valid objects in the other tables.
 
+ insert into customer_review(film_id, language_id, title, review_text, score, last_update) values (1,1,'good', 'blalbalba', 8, '2021/11/11'), (2,1,'fine', 'blalbalba', 6, '2021/10/01');
 Delete a film that has a review from the new_film table, what happens to the customer_review table?
 
 
@@ -43,19 +44,35 @@ Exercise 2 : DVD Rental
 Instructions
 Use UPDATE to change the language of some films. Make sure that you use valid languages.
 
+ update film set language_id = 3 where film_id in (3,4);
+
 Which foreign keys (references) are defined for the customer table? How does this affect the way in which we INSERT into the customer table?
+
+
 
 We created a new table called customer_review. Drop this table. Is this an easy step, or does it need extra checking?
 
+doesnt effect other tables
+
 Find out how many rentals are still outstanding (ie. have not been returned to the store yet).
 
+dvdrental=# select count(*) from rental where return_date is null; 183
+
 Find the 30 most expensive movies which are outstanding (ie. have not been returned to the store yet)
+
+select film.title, film.rental_rate from film inner join inventory on film.film_id = inventory.film_id inner join rental on inventory.inventory_id = rental.inventory_id inner join payment on rental.rental_id = payment.rental_id and rental.return_date is null order by rental_rate desc limit 30;
 
 Your friend is at the store, and decides to rent a movie. He knows he wants to see 4 movies, but he can’t remember their names. Can you help him find which movies he wants to rent?
 The 1st film : The film is about a sumo wrestler, and one of the actors is Penelope Monroe.
 
+select film.title, film_actor.actor_id, actor.first_name from film inner join film_actor using(film_id) inner join actor using(actor_id) where description ilike '%sumo wrestler%' and actor.last_name ilike '%monroe%' and actor.first_name = 'Penelope';
+
 The 2nd film : A short documentary (less than 1 hour long), rated “R”.
+select film.title, category.name from film inner join film_category using(film_id) inner join category using(category_id) where film.rating = 'R' and category.name = 'Documentary' and length < 60;
 
 The 3rd film : A film that his friend Matthew Mahan rented. He paid over $4.00 for the rental, and he returned it between the 28th of July and the 1st of August, 2005.
 
+select film.title, film.rental_rate, customer.first_name, customer.last_name, rental.rental_date from film inner join inventory using(film_id) inner join rental using(inventory_id) inner join customer using(customer_id) where customer.first_name ilike '%matthew%' and film.rental_rate > 4 and rental_date > '2005-07-28' and rental.return_date < '2005-08-01';
+
 The 4th film : His friend Matthew Mahan watched this film, as well. It had the word “boat” in the title or description, and it looked like it was a very expensive DVD to replace.
+none
